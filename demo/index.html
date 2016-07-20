@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>uvalib-events-card demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../../uvalib-button/uvalib-button.html">
+    <link rel="import" href="../../uvalib-theme/typekit.html">
+    <link rel="import" href="../../uvalib-theme/uvalib-theme.html">
+    <link rel="import" href="../uvalib-events-card.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <h3>Basic uvalib-events-card Demo</h3>
+      <demo-snippet>
+        <template>
+          <uvalib-events-card heading="Upcoming Events"
+              calendarHeight="600"
+              maxNumEventsShown="3">
+          </uvalib-events-card>
+          <uvalib-events-card heading="Upcoming September Workshops"
+              catIdsFilter="27116  27110"
+              calendarMonthDefault="9"
+              windowTargetId="1">
+            <div class="card-actions">
+              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View all events</uvalib-button>
+            </div>
+          </uvalib-events-card>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>
