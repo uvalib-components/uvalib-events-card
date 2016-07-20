@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <!--
 `uvalib-events-card`
@@ -11,9 +10,6 @@ This card component generates the LibCal mini calendar widget which allows for s
 <dom-module id="uvalib-events-card">
   <template>
     <style is="custom-style">
-      .card-content {
-        @apply(--layout-flex-horizontal);
-      }
     </style>
 
     <paper-card heading$="{{heading}}">
@@ -29,202 +25,202 @@ This card component generates the LibCal mini calendar widget which allows for s
       <content></content>
     </paper-card>
   </template>
+
+  <script>
+    Polymer({
+      is: 'uvalib-events-card',
+
+      properties: {
+        /**
+         * Card heading to use for the uvalib-events-card component.
+         */
+        heading: {
+          type: String,
+          value: ""
+        },
+
+        /**
+         * Identifier for the LibCal account id. Defaults to existing UVA Library account having ID 863.
+         */
+        institutionId: {
+          type: String,
+          value: 863
+        },
+
+        /**
+         * Identifier for the LibCal calender to display. Defaults to existing UVA Library Events calendar having ID 4299.
+         */
+        calId: {
+          type: String,
+          value: 4299
+        },
+
+        /**
+         * Identifier(s) for the LibCal locations to limit what displays on the calendar.
+         * Use spaces between IDs when specifying multiple values. No value will show all by default.
+         */
+        locIdsFilter: String,
+
+        /**
+         * Identifier(s) for the LibCal calendar categories to limit what displays on the calendar.
+         * Use spaces between IDs when specifying multiple values. No value will show all by default.
+         */
+        catIdsFilter: String,
+
+        /**
+         * Specify the target window the Event details link opens in. Acceptable values:
+         *    0 = _blank
+         *    1 = _self
+         *    2 = _parent
+         *    3 = _top
+         */
+        windowTargetId: {
+          type: Number,
+          value: 0,
+          observer: '_validateWindowTarget'
+        },
+
+        /**
+         * Calendar width in pixels. No value will indicate full width.
+         */
+        calendarWidth: {
+          type: Number,
+          value: 180,
+          observer: '_validateCalenderWidth'
+        },
+
+        /**
+        * Calendar height in pixels. No value will indicate full height.
+         */
+        calendarHeight: {
+          type: Number,
+          value: 450,
+          observer: '_validateCalendarHeight'
+        },
+
+        /**
+         * Limit the number of events to show.
+         */
+        maxNumEventsShown: {
+          type: Number,
+          value: 5
+        },
+
+        /**
+         * Defaults the calendar to a specific month. Specify the numeric value for the month.
+         * For example, use 4 to indicate the calendar displays the month of April.
+         */
+        calendarMonthDefault: {
+          type: Number,
+          value: 0,
+          observer: '_validateMonth'
+        },
+
+        /**
+         * LibCal widget iframe style attribute.
+         */
+        style: {
+          type: String,
+          value: "border-width:0"
+        },
+
+        /**
+         * LibCal widget iframe frameborder attribute.
+         */
+        frameborder: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * LibCal widget iframe scrolling attribute.
+         */
+        scrolling: {
+          type: String,
+          value: "no"
+        },
+
+        /**
+         * Springshare LibCal API calendar widget script URL.
+         */
+        _springshareLibCalWidgetScriptUrl: {
+          type: String,
+          value: "https://api3.libcal.com/embed_mini_calendar.php?mode=month"
+        },
+
+        /**
+         *
+         */
+        _calendarWidgetUrlWithParams: {
+          type: String,
+          computed: "_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault)"
+        }
+      },
+
+      /**
+       * Create the appropriate URL string that includes the parameters to
+       * customize what the calendar widget displays.
+       */
+      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault) {
+        // An institution ID is must be specified.
+        // A calendar ID is required and must be in the parameters.
+        var params = {
+          iid: institutionId,
+          cal_id: calId,
+          tar: windowTargetId,
+          h: calendarHeight,
+          l: maxNumEventsShown
+        }
+        if (locIdsFilter) {
+          // Adjust the location ID filters so that hyphens instead of spaces exist between them.
+          params.c = locIdsFilter.split(/[\s]+/).join('-');
+        }
+        if (catIdsFilter) {
+          // Adjust the category ID filters so that hyphens instead of spaces exist between them.
+          params.z = locIdsFilter.split(/[\s]+/).join('-');
+        }
+        if (calendarMonthDefault != 0) {
+          params.m = calendarMonthDefault;
+        }
+      },
+
+      /**
+       * Make sure the calendar is visible by insisting the height is greater than zero.
+       */
+      _validateCalendarHeight: function() {
+        if (this.calendarHeight < 1) {
+          this.calendarHeight = 1;
+        }
+      },
+
+      /**
+       * Make sure the calendar is visible by insisting the width is greater than zero.
+       */
+      _validateCalenderWidth: function() {
+        if (this.calendarWidth < 1) {
+          this.calendarWidth = 0;
+        }
+      },
+
+      /**
+       * Make sure if a calender month is specified that it represents a valid month.
+       */
+      _validateMonth: function() {
+        if ((this.calendarMonthDefault < 1) || (this.calendarMonthDefault > 12)) {
+          this.calendarMonthDefault = null;
+        }
+      },
+
+      /**
+       * Make sure only one of the four possible values has been passed.
+       */
+      _validateWindowTarget: function() {
+        // Make sure value is between 0 and 3.
+        if ((this.windowTargetId < 0) || (this.windowTargetId > 3)) {
+          this.windowTargetId = 0;
+        }
+      }
+
+    });
+  </script>
 </dom-module>
-
-<script>
-  Polymer({
-    is: 'uvalib-events-card',
-
-    properties: {
-      /**
-       * Card heading to use for the uvalib-events-card component.
-       */
-      heading: {
-        type: String,
-        value: ""
-      },
-
-      /**
-       * Identifier for the LibCal account id. Defaults to existing UVA Library account having ID 863.
-       */
-      institutionId: {
-        type: String,
-        value: 863
-      },
-
-      /**
-       * Identifier for the LibCal calender to display. Defaults to existing UVA Library Events calendar having ID 4299.
-       */
-      calId: {
-        type: String,
-        value: 4299
-      },
-
-      /**
-       * Identifier(s) for the LibCal locations to limit what displays on the calendar.
-       * Use spaces between IDs when specifying multiple values. No value will show all by default.
-       */
-      locIdsFilter: String,
-
-      /**
-       * Identifier(s) for the LibCal calendar categories to limit what displays on the calendar.
-       * Use spaces between IDs when specifying multiple values. No value will show all by default.
-       */
-      catIdsFilter: String,
-
-      /**
-       * Specify the target window the Event details link opens in. Acceptable values:
-       *    0 = _blank
-       *    1 = _self
-       *    2 = _parent
-       *    3 = _top
-       */
-      windowTargetId: {
-        type: Number,
-        value: 0,
-        observer: '_validateWindowTarget'
-      },
-
-      /**
-       * Calendar width in pixels. No value will indicate full width.
-       */
-      calendarWidth: {
-        type: Number,
-        value: 180,
-        observer: '_validateCalenderWidth'
-      },
-
-      /**
-      * Calendar height in pixels. No value will indicate full height.
-       */
-      calendarHeight: {
-        type: Number,
-        value: 450,
-        observer: '_validateCalendarHeight'
-      },
-
-      /**
-       * Limit the number of events to show.
-       */
-      maxNumEventsShown: {
-        type: Number,
-        value: 5
-      },
-
-      /**
-       * Defaults the calendar to a specific month. Specify the numeric value for the month.
-       * For example, use 4 to indicate the calendar displays the month of April.
-       */
-      calendarMonthDefault: {
-        type: Number,
-        value: 0,
-        observer: '_validateMonth'
-      },
-
-      /**
-       * LibCal widget iframe style attribute.
-       */
-      style: {
-        type: String,
-        value: "border-width:0"
-      },
-
-      /**
-       * LibCal widget iframe frameborder attribute.
-       */
-      frameborder: {
-        type: Number,
-        value: 0
-      },
-
-      /**
-       * LibCal widget iframe scrolling attribute.
-       */
-      scrolling: {
-        type: String,
-        value: "no"
-      },
-
-      /**
-       * Springshare LibCal API calendar widget script URL.
-       */
-      _springshareLibCalWidgetScriptUrl: {
-        type: String,
-        value: "https://api3.libcal.com/embed_mini_calendar.php?mode=month"
-      },
-
-      /**
-       *
-       */
-      _calendarWidgetUrlWithParams: {
-        type: String,
-        computed: "_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault)"
-      }
-    },
-
-    /**
-     * Create the appropriate URL string that includes the parameters to
-     * customize what the calendar widget displays.
-     */
-    _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault) {
-      // An institution ID is must be specified.
-      // A calendar ID is required and must be in the parameters.
-      var params = {
-        iid: institutionId,
-        cal_id: calId,
-        tar: windowTargetId,
-        h: calendarHeight,
-        l: maxNumEventsShown
-      }
-      if (locIdsFilter) {
-        // Adjust the location ID filters so that hyphens instead of spaces exist between them.
-        params.c = locIdsFilter.split(/[\s]+/).join('-');
-      }
-      if (catIdsFilter) {
-        // Adjust the category ID filters so that hyphens instead of spaces exist between them.
-        params.z = locIdsFilter.split(/[\s]+/).join('-');
-      }
-      if (calendarMonthDefault != 0) {
-        params.m = calendarMonthDefault;
-      }
-    },
-
-    /**
-     * Make sure the calendar is visible by insisting the height is greater than zero.
-     */
-    _validateCalendarHeight: function() {
-      if (this.calendarHeight < 1) {
-        this.calendarHeight = 1;
-      }
-    },
-
-    /**
-     * Make sure the calendar is visible by insisting the width is greater than zero.
-     */
-    _validateCalenderWidth: function() {
-      if (this.calendarWidth < 1) {
-        this.calendarWidth = 0;
-      }
-    },
-
-    /**
-     * Make sure if a calender month is specified that it represents a valid month.
-     */
-    _validateMonth: function() {
-      if ((this.calendarMonthDefault < 1) || (this.calendarMonthDefault > 12)) {
-        this.calendarMonthDefault = null;
-      }
-    },
-
-    /**
-     * Make sure only one of the four possible values has been passed.
-     */
-    _validateWindowTarget: function() {
-      // Make sure value is between 0 and 3.
-      if ((this.windowTargetId < 0) || (this.windowTargetId > 3)) {
-        this.windowTargetId = 0;
-      }
-    }
-
-  });
-</script>
