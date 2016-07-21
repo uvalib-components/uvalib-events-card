@@ -10,16 +10,19 @@ This card component generates the LibCal mini calendar widget which allows for s
 <dom-module id="uvalib-events-card">
   <template>
     <style is="custom-style">
+      :host {
+        display: block;
+      }
     </style>
 
-    <paper-card heading$="{{heading}}">
+    <paper-card heading="{{heading}}">
       <div class="card-content">
-        <iframe src$="{{_calendarWidgetUrlWithParams}}"
+        <iframe src="{{_calendarWidgetUrlWithParams}}"
           style$="{{style}}"
-          width$="{{calendarWidth}}"
-          height$="{{calendarHeight}}"
-          frameborder$="{{frameborder}}"
-          scrolling$="{{scrolling}}">
+          width="{{calendarWidth}}"
+          height="{{calendarHeight}}"
+          frameborder="{{frameborder}}"
+          scrolling="{{scrolling}}">
         </iframe>
       </div>
       <content></content>
@@ -182,6 +185,14 @@ This card component generates the LibCal mini calendar widget which allows for s
         if (calendarMonthDefault != 0) {
           params.m = calendarMonthDefault;
         }
+        // Append the parameters to the Springshare widget URL.
+        var paramStr = "";
+        for (var key in params) {
+          if (params.hasOwnProperty(key)) {
+            paramStr += "&" + key + "=" + target[key];
+          }
+        }
+        return _springshareLibCalWidgetScriptUrl + paramStr;
       },
 
       /**
