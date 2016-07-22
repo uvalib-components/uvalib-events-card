@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../uvalib-card/uvalib-card.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
@@ -17,7 +17,7 @@ This card component generates the LibCal mini calendar widget which allows for s
       }
     </style>
 
-    <paper-card heading="{{heading}}">
+    <uvalib-card heading="{{heading}}">
       <div class="card-content">
         <iframe src="{{_calendarWidgetUrlWithParams}}"
           style$="{{style}}"
@@ -26,9 +26,11 @@ This card component generates the LibCal mini calendar widget which allows for s
           frameborder="{{frameborder}}"
           scrolling="{{scrolling}}">
         </iframe>
+        <!-- iframe src="https://api3.libcal.com/embed_mini_calendar.php?mode=month&iid=863&cal_id=4299&l=5&tar=0&h=450&c=&z=" style="border-width:0" width="180" height="450" frameborder="0" scrolling="no">
+        </iframe -->
       </div>
       <content></content>
-    </paper-card>
+    </uvalib-card>
   </template>
 
   <script>
@@ -64,13 +66,19 @@ This card component generates the LibCal mini calendar widget which allows for s
          * Identifier(s) for the LibCal locations to limit what displays on the calendar.
          * Use spaces between IDs when specifying multiple values. No value will show all by default.
          */
-        locIdsFilter: String,
+        locIdsFilter: {
+          type: String,
+          value: ""
+        },
 
         /**
          * Identifier(s) for the LibCal calendar categories to limit what displays on the calendar.
          * Use spaces between IDs when specifying multiple values. No value will show all by default.
          */
-        catIdsFilter: String,
+        catIdsFilter: {
+          type: String,
+          value: ""
+        },
 
         /**
          * Specify the target window the Event details link opens in. Acceptable values:
@@ -148,17 +156,17 @@ This card component generates the LibCal mini calendar widget which allows for s
         /**
          * Springshare LibCal API calendar widget script URL.
          */
-        _springshareLibCalWidgetScriptUrl: {
+        _springshareLibCalWidgetUrl: {
           type: String,
           value: "https://api3.libcal.com/embed_mini_calendar.php?mode=month"
         },
 
         /**
-         *
+         * The computed source URL that Springshare is expecting.
          */
         _calendarWidgetUrlWithParams: {
           type: String,
-          computed: "_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault)"
+          computed: '_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault,_springshareLibCalWidgetUrl)'
         }
       },
 
@@ -166,7 +174,7 @@ This card component generates the LibCal mini calendar widget which allows for s
        * Create the appropriate URL string that includes the parameters to
        * customize what the calendar widget displays.
        */
-      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault) {
+      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault,_springshareLibCalWidgetUrl) {
         // An institution ID is must be specified.
         // A calendar ID is required and must be in the parameters.
         var params = {
@@ -174,27 +182,30 @@ This card component generates the LibCal mini calendar widget which allows for s
           cal_id: calId,
           tar: windowTargetId,
           h: calendarHeight,
-          l: maxNumEventsShown
+          l: maxNumEventsShown,
+          c: locIdsFilter.split(/[ ]+/).join('-'),
+          z: catIdsFilter.split(/[ ]+/).join('-'),
+          m: calendarMonthDefault
         }
-        if (locIdsFilter) {
+/*        if (locIdsFilter != "") {
           // Adjust the location ID filters so that hyphens instead of spaces exist between them.
           params.c = locIdsFilter.split(/[\s]+/).join('-');
         }
-        if (catIdsFilter) {
+        if (catIdsFilter != "") {
           // Adjust the category ID filters so that hyphens instead of spaces exist between them.
-          params.z = locIdsFilter.split(/[\s]+/).join('-');
+          params.z = catIdsFilter.split(/[\s]+/).join('-');
         }
         if (calendarMonthDefault != 0) {
           params.m = calendarMonthDefault;
         }
-        // Append the parameters to the Springshare widget URL.
+*/        // Append the parameters to the Springshare widget URL.
         var paramStr = "";
         for (var key in params) {
           if (params.hasOwnProperty(key)) {
-            paramStr += "&" + key + "=" + target[key];
+            paramStr += "&" + key + "=" + params[key];
           }
         }
-        return _springshareLibCalWidgetScriptUrl + paramStr;
+        return _springshareLibCalWidgetUrl + paramStr;
       },
 
       /**
@@ -220,7 +231,7 @@ This card component generates the LibCal mini calendar widget which allows for s
        */
       _validateMonth: function() {
         if ((this.calendarMonthDefault < 1) || (this.calendarMonthDefault > 12)) {
-          this.calendarMonthDefault = null;
+          this.calendarMonthDefault = 0;
         }
       },
 
