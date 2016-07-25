@@ -187,18 +187,7 @@ This card component generates the LibCal mini calendar widget which allows for s
           z: catIdsFilter.split(/[ ]+/).join('-'),
           m: calendarMonthDefault
         }
-/*        if (locIdsFilter != "") {
-          // Adjust the location ID filters so that hyphens instead of spaces exist between them.
-          params.c = locIdsFilter.split(/[\s]+/).join('-');
-        }
-        if (catIdsFilter != "") {
-          // Adjust the category ID filters so that hyphens instead of spaces exist between them.
-          params.z = catIdsFilter.split(/[\s]+/).join('-');
-        }
-        if (calendarMonthDefault != 0) {
-          params.m = calendarMonthDefault;
-        }
-*/        // Append the parameters to the Springshare widget URL.
+
         var paramStr = "";
         for (var key in params) {
           if (params.hasOwnProperty(key)) {
