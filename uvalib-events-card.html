@@ -6,6 +6,17 @@
 `uvalib-events-card`
 This card component generates the LibCal mini calendar widget which allows for selecting a single calendar and filtering on library as well as category.
 
+### Styling
+
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--uvalib-events-card-bkgrd-color` | Background color of card | `Based on uvalib-theme --color-text-gray`
+`--uvalib-events-card-header-color` | Color of card header text | `Based on uvalib-theme --color-white`
+
+Note: Consult the styling used in the actual Springshare Events Calendar for widget output for a single color for the component and iframe content.
+
 @demo demo/index.html
 -->
 
@@ -14,6 +25,9 @@ This card component generates the LibCal mini calendar widget which allows for s
     <style is="custom-style">
       :host {
         display: block;
+        background-color: var(--uvalib-events-card-bkgrd-color,--color-text-gray);
+        --paper-card-background-color: var(--uvalib-events-card-bkgrd-color,--color-text-gray);
+        --paper-card-header-color: var(--uvalib-events-card-header-color,--color-white);
       }
     </style>
 
@@ -26,8 +40,6 @@ This card component generates the LibCal mini calendar widget which allows for s
           frameborder$="{{frameborder}}"
           scrolling$="{{scrolling}}">
         </iframe>
-        <!-- iframe src="https://api3.libcal.com/embed_mini_calendar.php?mode=month&iid=863&cal_id=4299&l=5&tar=0&h=450&c=&z=" style="border-width:0" width="180" height="450" frameborder="0" scrolling="no">
-        </iframe -->
       </div>
       <content></content>
     </uvalib-card>
