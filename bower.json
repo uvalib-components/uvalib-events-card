@@ -4,8 +4,9 @@
   "main": "uvalib-events-card.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
+    "uvalib-theme": "uvalib-components/uvalib-theme#master",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.1",
-    "uvalib-card": "uvalib-components/uvalib-card"
+    "iron-icon": "PolymerElements/iron-icon#^1.0.10"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

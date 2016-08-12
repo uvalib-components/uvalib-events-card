@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../uvalib-card/uvalib-card.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../uvalib-theme/uvalib-icons.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 
 <!--
 `uvalib-events-card`
@@ -25,24 +26,54 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
     <style is="custom-style">
       :host {
         display: block;
-        background-color: var(--uvalib-events-card-bkgrd-color,--color-text-gray);
-        --paper-card-background-color: var(--uvalib-events-card-bkgrd-color,--color-text-gray);
-        --paper-card-header-color: var(--uvalib-events-card-header-color,--color-white);
+        --uvalib-events-card-header-font-size: 24px;
+        --uvalib-events-card-header-font-weight: bold;
+        background-color: var(--uvalib-events-card-bkgrd-color,--color-light-gray);
+        padding: var(--uvalib-events-card-padding,15px);
+        --iron-icon-fill-color: var(--color-text-gray,black);
+      }
+      iron-icon {
+        padding-right: 10px;
+      }
+      .card-header {
+        font-size: var(--uvalib-events-card-header-font-size,--header-font-size);
+        font-weight: var(--uvalib-events-card-header-font-weight,--font-weight-demi);
+        padding-bottom: 20px;
+      }
+      .card-actions {
+        border-top: 1px solid gray;
+      }
+      .s-lc-ea-h3 {
+        display: none;
+      }
+      ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+      }
+      li a {
+        text-decoration: none;
+        color: black;
+      }
+      .s-lc-ea-date {
+        font-size: 12px;
       }
     </style>
 
-    <uvalib-card heading="{{heading}}">
-      <div class="card-content">
-        <iframe src="{{_calendarWidgetUrlWithParams}}"
-          style$="{{style}}"
-          width$="{{calendarWidth}}"
-          height$="{{calendarHeight}}"
-          frameborder$="{{frameborder}}"
-          scrolling$="{{scrolling}}">
-        </iframe>
+    <div class="card">
+      <div class="card-header">
+        <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
       </div>
-      <content></content>
-    </uvalib-card>
+      <div class="card-content">
+        <div id$="api_upc_cid{{calId}}_iid{{institutionId}}" class="container"></div>
+        <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
+        </script>
+      </div>
+      <div class="card-actions">
+        <content></content>
+      </div>
+    </div>
   </template>
 
   <script>
@@ -50,6 +81,10 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       is: 'uvalib-events-card',
 
       properties: {
+        headingIcon: {
+          type: String,
+          value: "calendar"
+        },
         /**
          * Card heading to use for the uvalib-events-card component.
          */
@@ -93,37 +128,6 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         },
 
         /**
-         * Specify the target window the Event details link opens in. Acceptable values:
-         *    0 = _blank
-         *    1 = _self
-         *    2 = _parent
-         *    3 = _top
-         */
-        windowTargetId: {
-          type: Number,
-          value: 0,
-          observer: '_validateWindowTarget'
-        },
-
-        /**
-         * Calendar width in pixels. No value will indicate full width.
-         */
-        calendarWidth: {
-          type: Number,
-          value: 700,
-          observer: '_validateCalenderWidth'
-        },
-
-        /**
-        * Calendar height in pixels. No value will indicate full height.
-         */
-        calendarHeight: {
-          type: Number,
-          value: 400,
-          observer: '_validateCalendarHeight'
-        },
-
-        /**
          * Limit the number of events to show.
          */
         maxNumEventsShown: {
@@ -132,53 +136,19 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         },
 
         /**
-         * Defaults the calendar to a specific month. Specify the numeric value for the month.
-         * For example, use 4 to indicate the calendar displays the month of April.
-         */
-        calendarMonthDefault: {
-          type: Number,
-          value: 0,
-          observer: '_validateMonth'
-        },
-
-        /**
-         * LibCal widget iframe style attribute.
-         */
-        style: {
-          type: String,
-          value: "border-width:0"
-        },
-
-        /**
-         * LibCal widget iframe frameborder attribute.
-         */
-        frameborder: {
-          type: Number,
-          value: 0
-        },
-
-        /**
-         * LibCal widget iframe scrolling attribute.
-         */
-        scrolling: {
-          type: String,
-          value: "no"
-        },
-
-        /**
          * Springshare LibCal API calendar widget script URL.
          */
         _springshareLibCalWidgetUrl: {
           type: String,
-          value: "https://api3.libcal.com/embed_mini_calendar.php?mode=month"
+          value: "https://api3.libcal.com/api_events.php?m=upc&simple=ul_date&context=object&format=js"
         },
 
         /**
          * The computed source URL that Springshare is expecting.
          */
-        _calendarWidgetUrlWithParams: {
+        _widgetUrlWithParams: {
           type: String,
-          computed: '_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault,_springshareLibCalWidgetUrl)'
+          computed: '_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl)'
         }
       },
 
@@ -186,18 +156,15 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
        * Create the appropriate URL string that includes the parameters to
        * customize what the calendar widget displays.
        */
-      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,windowTargetId,calendarWidth,calendarHeight,maxNumEventsShown,calendarMonthDefault,_springshareLibCalWidgetUrl) {
+      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl) {
         // An institution ID is must be specified.
         // A calendar ID is required and must be in the parameters.
         var params = {
           iid: institutionId,
-          cal_id: calId,
-          tar: windowTargetId,
-          h: calendarHeight,
+          cid: calId,
           l: maxNumEventsShown,
           c: locIdsFilter.split(/[ ]+/).join('-'),
-          z: catIdsFilter.split(/[ ]+/).join('-'),
-          m: calendarMonthDefault
+          d: catIdsFilter.split(/[ ]+/).join('-')
         }
 
         var paramStr = "";
@@ -210,40 +177,10 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       },
 
       /**
-       * Make sure the calendar is visible by insisting the height is greater than zero.
+       * Apply styles from this component onto the LibCal widget
        */
-      _validateCalendarHeight: function() {
-        if (this.calendarHeight < 1) {
-          this.calendarHeight = 1;
-        }
-      },
-
-      /**
-       * Make sure the calendar is visible by insisting the width is greater than zero.
-       */
-      _validateCalenderWidth: function() {
-        if (this.calendarWidth < 1) {
-          this.calendarWidth = 0;
-        }
-      },
-
-      /**
-       * Make sure if a calender month is specified that it represents a valid month.
-       */
-      _validateMonth: function() {
-        if ((this.calendarMonthDefault < 1) || (this.calendarMonthDefault > 12)) {
-          this.calendarMonthDefault = 0;
-        }
-      },
-
-      /**
-       * Make sure only one of the four possible values has been passed.
-       */
-      _validateWindowTarget: function() {
-        // Make sure value is between 0 and 3.
-        if ((this.windowTargetId < 0) || (this.windowTargetId > 3)) {
-          this.windowTargetId = 0;
-        }
+      ready: function() {
+        this.scopeSubtree(this.querySelector('.container'), true);
       }
 
     });

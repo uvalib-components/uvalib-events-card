@@ -12,9 +12,11 @@
     <link rel="import" href="../../uvalib-button/uvalib-button.html">
     <link rel="import" href="../../uvalib-theme/typekit.html">
     <link rel="import" href="../../uvalib-theme/uvalib-theme.html">
+    <link rel="import" href="../../uvalib-theme/uvalib-icons.html">
     <link rel="import" href="../uvalib-events-card.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      /* Style to apply to the widget */
     </style>
   </head>
   <body>
@@ -23,19 +25,12 @@
       <h3>Basic uvalib-events-card Demo</h3>
       <demo-snippet>
         <template>
-          <uvalib-events-card heading="Events"
-              calendar-width="700"
-              calendar-height="400"
-              max-num-events-shown="3">
-          </uvalib-events-card>
-          <p></p>
-          <uvalib-events-card heading="Upcoming September Workshops"
-              calendar-width="800"
-              cat-ids-filter="27116 27110"
-              calendar-month-default="9"
-              window-target-id="1">
+          <uvalib-events-card heading="Upcoming Events"
+              width="800"
+              max-num-events-shown="4"
+              cat-ids-filter="27116 26930">
             <div class="card-actions">
-              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View all events</uvalib-button>
+              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View calendar</uvalib-button>
             </div>
           </uvalib-events-card>
         </template>
