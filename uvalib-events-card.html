@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../uvalib-theme/uvalib-icons.html">
+<link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 
 <!--
@@ -29,11 +29,13 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         --uvalib-events-card-header-font-size: 24px;
         --uvalib-events-card-header-font-weight: bold;
         background-color: var(--uvalib-events-card-bkgrd-color,--color-light-gray);
-        padding: var(--uvalib-events-card-padding,15px);
         --iron-icon-fill-color: var(--color-text-gray,black);
       }
       iron-icon {
         padding-right: 10px;
+      }
+      .card {
+        padding: var(--uvalib-evens-card-padding,15px);
       }
       .card-header {
         font-size: var(--uvalib-events-card-header-font-size,--header-font-size);
@@ -41,7 +43,11 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         padding-bottom: 20px;
       }
       .card-actions {
-        border-top: 1px solid gray;
+        border-top: 1px solid LightGray;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: var(--uvalib-event-card-padding,15px);
+        padding-right: var(--uvalib-events-card-padding,15px);
       }
       .s-lc-ea-h3 {
         display: none;
@@ -55,25 +61,26 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       li a {
         text-decoration: none;
         color: black;
+        padding-bottom: 10px;
       }
       .s-lc-ea-date {
         font-size: 12px;
       }
     </style>
 
-    <div class="card">
-      <div class="card-header">
-        <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
+    <paper-material elevation={{elevation}}>
+      <div class="card">
+        <div class="card-header">
+          <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
+        </div>
+        <div class="card-content">
+          <div id$="api_upc_cid{{calId}}_iid{{institutionId}}" class="container"></div>
+          <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
+          </script>
+        </div>
       </div>
-      <div class="card-content">
-        <div id$="api_upc_cid{{calId}}_iid{{institutionId}}" class="container"></div>
-        <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
-        </script>
-      </div>
-      <div class="card-actions">
-        <content></content>
-      </div>
-    </div>
+      <content></content>
+    </paper-material>
   </template>
 
   <script>
@@ -81,6 +88,11 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       is: 'uvalib-events-card',
 
       properties: {
+        elevation: {
+          type: Number,
+          value: 1
+        },
+
         headingIcon: {
           type: String,
           value: "calendar"
@@ -182,6 +194,7 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
        */
       ready: function() {
         this.scopeSubtree(this.querySelector('.container'), true);
+        this.scopeSubtree(this.querySelector('.card-actions'), true);
       }
 
     });
