@@ -32,17 +32,23 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       }
       paper-material {
         background-color: var(--uvalib-events-card-bkgrd-color,--color-light-gray);
+        height: 100%;
       }
       iron-icon {
         padding-right: 10px;
       }
       .card {
+        height: 100%;
+        @apply(--layout-vertical);
         padding: var(--uvalib-evens-card-padding,15px);
       }
       .card-header {
         font-size: var(--uvalib-events-card-header-font-size,--header-font-size);
         font-weight: var(--uvalib-events-card-header-font-weight,--font-weight-demi);
         padding-bottom: 20px;
+      }
+      .card-content {
+        @apply(--layout-flex);
       }
       .card-actions {
         border-top: 1px solid LightGray;
@@ -80,8 +86,10 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
           <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
           </script>
         </div>
+        <div class="card-actions">
+          <content></content>
+        </div>
       </div>
-      <content></content>
     </paper-material>
   </template>
 
