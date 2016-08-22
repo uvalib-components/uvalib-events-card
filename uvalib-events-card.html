@@ -83,8 +83,10 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         </div>
         <div class="card-content">
           <div id$="api_upc_cid{{calId}}_iid{{institutionId}}" class="container"></div>
+          <!--
           <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
           </script>
+        -->
         </div>
         <div class="card-actions">
           <content></content>
@@ -173,6 +175,20 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
           type: String,
           computed: '_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl)'
         }
+      },
+
+      observers: [
+        '_getScript(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl)'
+      ],
+
+      _getScript: function(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl){
+        this.debounce('getscript', function(){
+          var url = this._generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl);
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.setAttribute('src', url);
+          Polymer.dom(this.root).appendChild(s);
+        }.bind(this));
       },
 
       /**
