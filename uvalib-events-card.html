@@ -2,6 +2,7 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../uvalib-theme/uvalib-icons.html">
+<link rel="import" href="../uvalib-theme/uvalib-common-styles.html">
 
 <!--
 `uvalib-events-card`
@@ -23,7 +24,7 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
 
 <dom-module id="uvalib-events-card">
   <template>
-    <style is="custom-style">
+    <style is="custom-style" include="uvalib-theme">
       :host {
         display: block;
         --uvalib-events-card-header-font-size: 24px;
