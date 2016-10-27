@@ -3,6 +3,7 @@
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../uvalib-theme/uvalib-icons.html">
 <link rel="import" href="../uvalib-theme/uvalib-theme.html">
+<link rel="import" href="../byutv-jsonp/byutv-jsonp.html">
 
 <!--
 `uvalib-events-card`
@@ -78,17 +79,17 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       }
     </style>
 
-    <paper-material elevation={{elevation}}>
+    <byutv-jsonp id="evtData" auto url="{{_springshareLibcalApiUrl}}" params="{{_eventListParams}}" last-response="{{_springshareData}}"
+      debounce-duration="300"></byutv-jsonp>
+
+    <paper-material elevation$={{elevation}}>
       <div class="card">
         <div class="card-header">
           <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
         </div>
         <div class="card-content">
-          <div id$="api_upc_cid{{calId}}_iid{{institutionId}}" class="container"></div>
-          <!--
-          <script type="text/javascript" src$="{{_widgetUrlWithParams}}">
-          </script>
-        -->
+          <div class="container">
+          </div>
         </div>
         <div class="card-actions">
           <content></content>
@@ -137,8 +138,8 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         },
 
         /**
-         * Identifier(s) for the LibCal locations to limit what displays on the calendar.
-         * Use spaces between IDs when specifying multiple values. No value will show all by default.
+         * Identifier(s) for the LibCal locations to limit what displays on the card.
+         * Use commas between IDs when specifying multiple values. No value will show all by default.
          */
         locIdsFilter: {
           type: String,
@@ -146,8 +147,8 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         },
 
         /**
-         * Identifier(s) for the LibCal calendar categories to limit what displays on the calendar.
-         * Use spaces between IDs when specifying multiple values. No value will show all by default.
+         * Identifier(s) for the LibCal calendar categories to limit what displays on the card.
+         * Use commas between IDs when specifying multiple values. No value will show all by default.
          */
         catIdsFilter: {
           type: String,
@@ -163,58 +164,79 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         },
 
         /**
-         * Springshare LibCal API calendar widget script URL.
+         * Starting date to retrieve events. Can accept dates from the past.
+         * Format: YYYY-MM-DD
          */
-        _springshareLibCalWidgetUrl: {
+        startDate: {
           type: String,
-          value: "https://api3.libcal.com/api_events.php?m=upc&simple=ul_date&context=object&format=js"
+          value: ''
         },
 
         /**
-         * The computed source URL that Springshare is expecting.
+         * Number of days into the future to retrieve events from, starting from startDate.
          */
-        _widgetUrlWithParams: {
+        days: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * Springshare LibCal API event list URL
+         */
+        _springshareLibcalApiUrl: {
           type: String,
-          computed: '_generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl)'
+          value: 'https://api2.libcal.com/1.0/events/'
+        },
+
+        /**
+         * Springshare LibCal API Event request key
+         */
+        _apiKey: {
+          type: String,
+          value: 'c45a1428103ed000ba4025e9970edf54'
+        },
+
+        /**
+         * The Springshare parameters for retrieving the event list.
+         */
+        _eventListParams: {
+          type: Object,
+          computed: "_getParams(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,startDate,days,_apiKey)"
+        },
+
+        /**
+         * JSON data returned from Springshare API call.
+         */
+        _springshareData: Object,
+
+        _events: {
+          type: Array,
+          computed: '_buildEventList(_springshareData)'
         }
-      },
-
-      observers: [
-        '_getScript(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl)'
-      ],
-
-      _getScript: function(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl){
-        this.debounce('getscript', function(){
-          var url = this._generateWidgetUrl(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl);
-          var s = document.createElement('script');
-          s.type = 'text/javascript';
-          s.setAttribute('src', url);
-          Polymer.dom(this.root).appendChild(s);
-        }.bind(this));
       },
 
       /**
-       * Create the appropriate URL string that includes the parameters to
-       * customize what the calendar widget displays.
+       * Get the Springshare parameters into a proper object.
        */
-      _generateWidgetUrl: function(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,_springshareLibCalWidgetUrl) {
-        // An institution ID is must be specified.
-        // A calendar ID is required and must be in the parameters.
+      _getParams: function(institutionId,calId,locIdsFilter,catIdsFilter,maxNumEventsShown,startDate,days,_apiKey) {
         var params = {
+          key: _apiKey,
           iid: institutionId,
-          cid: calId,
-          l: maxNumEventsShown,
-          c: locIdsFilter.split(/[ ]+/).join('-'),
-          d: catIdsFilter.split(/[ ]+/).join('-')
+          cal_id: calId,
+          limit: maxNumEventsShown,
+          campus: locIdsFilter.split(/[ ]+/).join(','),
+          category: catIdsFilter.split(/[ ]+/).join(',')
         }
+        if (locIdsFilter != '') { params.campus = locIdsFilter; }
+        if (catIdsFilter != '') { params.category = catIdsFilter; }
+        if (startDate != '') { params.date = startDate; }
+        if (days != 0) { params.days = days; }
+        return params;
+      },
 
-        var paramStr = "";
-        for (var key in params) {
-          if (params.hasOwnProperty(key)) {
-            paramStr += "&" + key + "=" + params[key];
-          }
-        }
-        return _springshareLibCalWidgetUrl + paramStr;
+      _buildEventList: function(data) {
+        var eList = new Array();
+
       },
 
       /**
