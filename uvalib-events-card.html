@@ -88,8 +88,14 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
           <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
         </div>
         <div class="card-content">
-          <div class="container">
-          </div>
+          <template is="dom-repeat" items="{{_events}}">
+            <div class="event">
+              <div class="category">{{item.category}}</div>
+              <div class="title"><a href="{{item.url}}">{{item.title}}</a></div>
+              <div class="date-time">{{item.date}}, {{item.starttime}} - {{item.endtime}}</div>
+              <div class="location">{{item.location}}</div>
+            </div>
+          </template>
         </div>
         <div class="card-actions">
           <content></content>
@@ -235,15 +241,36 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       },
 
       _buildEventList: function(data) {
-        var eList = new Array();
-
+        var events = new Array();
+        for (var i=0; i < data.events.length; i++) {
+          var title = data.events[i].title;
+          var url = data.events[i].url.public;
+          var category = (data.events[i].category[0].name) ? data.events[i].category[0].name : '';
+          var location = data.events[i].location.name;
+          var d = new Date(data.events[i].start);
+          var date =  d.toDateString(); //d.toLocaleDateString();
+          var startTime = d.toLocaleTimeString().replace(':00 ',' ');
+          d = new Date(data.events[i].end);
+          var endTime =  d.toLocaleTimeString().replace(':00 ',' ');
+          var info = {
+            title: title,
+            url: url,
+            category: category,
+            location: location,
+            date: date,
+            starttime: startTime,
+            endtime: endTime
+          }
+          events[i] = info;
+        }
+        return events;
       },
 
       /**
        * Apply styles from this component onto the LibCal widget
        */
       ready: function() {
-        this.scopeSubtree(this.querySelector('.container'), true);
+        this.scopeSubtree(this.querySelector('.card-content'), true);
         this.scopeSubtree(this.querySelector('.card-actions'), true);
       },
 
