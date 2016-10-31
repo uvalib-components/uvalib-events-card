@@ -3,6 +3,7 @@
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../uvalib-theme/uvalib-icons.html">
 <link rel="import" href="../uvalib-theme/uvalib-theme.html">
+<link rel="import" href="../uvalib-helper-libs/moment-timezone.html">
 <link rel="import" href="../byutv-jsonp/byutv-jsonp.html">
 
 <!--
@@ -75,13 +76,13 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         color: var(--color-primary-orange);
       }
       .title {
-        font-weight: var(--font-title);
+        @apply(--font-title);
       }
       .date-time {
-        font-weight: var(--font-subheading);
+        @apply(--font-subheading);
       }
       .location {
-        font-size: 12px;
+        font-size: 14px;
       }
     </style>
 
@@ -247,17 +248,16 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
       },
 
       _buildEventList: function(data) {
+        moment().tz("America/New_York").format();
         var events = new Array();
         for (var i=0; i < data.events.length; i++) {
           var title = data.events[i].title;
           var url = data.events[i].url.public;
           var category = (data.events[i].category[0].name) ? data.events[i].category[0].name : '';
           var location = data.events[i].location.name;
-          var d = new Date(data.events[i].start);
-          var date =  d.toDateString(); //d.toLocaleDateString();
-          var startTime = d.toTimeString().replace(':00 ',' ');
-          d = new Date(data.events[i].end);
-          var endTime =  d.toTimeString().replace(':00 ',' ');
+          var date =  moment(data.events[i].start).tz("America/New_York").format("MMMM Do");
+          var startTime = moment(data.events[i].start).tz("America/New_York").format("h:mm A");
+          var endTime =  moment(data.events[i].end).tz("America/New_York").format("h:mm A zz");
           var info = {
             title: title,
             url: url,
