@@ -19,7 +19,7 @@
   </head>
   <body>
 
-    <div class="vertical-section-container centered">
+    <div class="vertical-section-container">
       <h3>Basic uvalib-events-card Demo</h3>
       <demo-snippet>
         <template>
@@ -28,19 +28,10 @@
               padding: 20px;
             }
             .long {
-              height: 800px;
+              min-height: 800px;
             }
           </style>
-<!--
-          <uvalib-events-card heading="Upcoming Events"
-              elevation="3"
-              max-num-events-shown="4"
-              cat-ids-filter="27116 26930">
-            <div class="card-actions">
-              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View calendar</uvalib-button>
-            </div>
-          </uvalib-events-card>
--->
+
           <uvalib-events-card class="long" heading="Upcoming Events" elevation="3" max-num-events-shown="6">
               <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View calendar</uvalib-button>
           </uvalib-events-card>

@@ -60,21 +60,27 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         padding-left: var(--uvalib-event-card-padding,15px);
         padding-right: var(--uvalib-events-card-padding,15px);
       }
-      .s-lc-ea-h3 {
-        display: none;
-      }
-      ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-      }
-      li a {
+      div a {
         text-decoration: none;
         color: black;
         padding-bottom: 10px;
       }
-      .s-lc-ea-date {
+      .event {
+        padding: 5px 0px 10px 0px;
+      }
+      .category {
+        color: var(--color-primary-orange);
+        font-weight: var(--font-body1);
+        font-size: 12px;
+        color: var(--color-primary-orange);
+      }
+      .title {
+        font-weight: var(--font-title);
+      }
+      .date-time {
+        font-weight: var(--font-subheading);
+      }
+      .location {
         font-size: 12px;
       }
     </style>
@@ -249,9 +255,9 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
           var location = data.events[i].location.name;
           var d = new Date(data.events[i].start);
           var date =  d.toDateString(); //d.toLocaleDateString();
-          var startTime = d.toLocaleTimeString().replace(':00 ',' ');
+          var startTime = d.toTimeString().replace(':00 ',' ');
           d = new Date(data.events[i].end);
-          var endTime =  d.toLocaleTimeString().replace(':00 ',' ');
+          var endTime =  d.toTimeString().replace(':00 ',' ');
           var info = {
             title: title,
             url: url,
