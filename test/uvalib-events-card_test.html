@@ -18,6 +18,12 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="empty">
+      <template>
+        <uvalib-events-card max-num-events-shown="0"></uvalib-events-card>
+      </template>
+    </test-fixture>
+
     <script>
       suite('uvalib-events-card', function() {
 
@@ -26,7 +32,15 @@
           assert.equal(element.is, 'uvalib-events-card');
         });
 
+        test('no events generates card content', function() {
+          var element = fixture('empty');
+          assert.equal(element.is, 'uvalib-events-card');
+          assert.equal(element.eventsExist, false);
+        });
       });
+      
+      a11ySuite('basic');
+      a11ySuite('empty');
     </script>
   </body>
 </html>

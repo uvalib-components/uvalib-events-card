@@ -1,4 +1,5 @@
 # \<uvalib-events-card\>
+[![Build Status](https://travis-ci.org/uvalib-components/uvalib-events-card.svg?branch=master)](https://travis-ci.org/uvalib-components/uvalib-events-card)
 
 This card component generates the LibCal mini calendar widget which allows for selecting a single calendar and filtering on library as well as category. Additional customizations are allows for window target, calendar width/height, as well as the max number of events to list for the selected date.
 
