@@ -2,6 +2,7 @@
   "verbose": true,
   "plugins": {
     "sauce": {
+      "disabled": true,
       "browsers": [{
           "browserName": "microsoftedge",
           "platform": "Windows 10",
