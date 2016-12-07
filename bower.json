@@ -17,5 +17,8 @@
     "uvalib-button": "uvalib-components/uvalib-button#master",
     "web-component-tester": "^4.3.3",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.22"
+  },
+  "resolutions": {
+    "lodash": "^3.7.0"
   }
 }
