@@ -1,6 +1,6 @@
 {
   "name": "uvalib-events-card",
-  "description": "This card component generates the LibCal mini calendar widget.",
+  "description": "This card component uses the libCal API to retrieve events and then displays them in a card layout.",
   "main": "uvalib-events-card.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.6.1",
