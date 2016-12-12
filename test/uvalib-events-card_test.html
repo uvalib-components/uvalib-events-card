@@ -39,7 +39,7 @@
           var element = fixture('empty');
           flush(function() {
             assert.equal(element.is, 'uvalib-events-card');
-            assert.equal(element.eventsExist, false);
+            assert.isUndefined(element._events);
             done();
           });
         });

@@ -103,7 +103,7 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
               <div class="location">{{item.location}}</div>
             </div>
           </template>
-          <template is="dom-if" if="{{!eventsExist}}">
+          <template is="dom-if" if="{{!_events.length}}">
             <div class="title">No events at this time. Please check back again soon.</div>
           </template>
         </div>
@@ -228,11 +228,6 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         _events: {
           type: Array,
           computed: '_buildEventList(_springshareData)'
-        },
-
-        eventsExist: {
-          type: Boolean,
-          value: false
         }
       },
 
@@ -276,9 +271,6 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
             endtime: endTime
           }
           events[i] = info;
-        }
-        if (events.length > 0) {
-          this._eventsExist = true;
         }
         return events;
       },
