@@ -27,8 +27,7 @@ gulp.task('accessibility-report', function() {
     .pipe(rename({
       extname: '.txt'
     }))
-    .pipe(gulp.dest('reports/txt'))
-    .on('error', console.log);
+    .pipe(gulp.dest('reports/txt'));
 });
 
 // Test the web component accessibility via console output for automated processes.
@@ -43,6 +42,9 @@ gulp.task('accessibility', function() {
       ],
       options: {
           accessibilityLevel: 'WCAG2AA',
+          reportLevels: {
+              error: true
+          }
       }
     }))
     .on('error', console.log);
