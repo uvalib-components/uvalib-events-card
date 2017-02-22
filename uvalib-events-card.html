@@ -45,14 +45,25 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         @apply(--layout-vertical);*/
       }
       .card-header {
+        /*
         font-size: var(--uvalib-events-card-header-font-size,--header-font-size);
         font-weight: var(--uvalib-events-card-header-font-weight,--font-weight-demi);
+        */
         padding: var(--uvalib-evens-card-padding,15px);
-        padding-bottom: 20px;
+
+        font-family: var(--font-primary);
+        font-size: 24px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.33;
+        letter-spacing: normal;
+        color: rgba(0, 0, 0, 0.54);
       }
       .card-content {
         @apply(--layout-flex);
         padding: var(--uvalib-evens-card-padding,15px);
+        padding-top: 0;
       }
       .card-actions {
         border-top: 1px solid LightGray;
@@ -67,7 +78,7 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
         padding-bottom: 10px;
       }
       .event {
-        padding: 5px 0px 10px 0px;
+        padding: 5px 0px 5px 0px;
       }
       .category {
         color: var(--color-primary-orange);
