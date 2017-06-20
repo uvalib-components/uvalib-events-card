@@ -3,7 +3,35 @@
   "description": "This card component uses the libCal API to retrieve events and then displays them in a card layout.",
   "main": "uvalib-events-card.html",
   "dependencies": {
-    "uvalib-elements":"uvalib-components/uvalib-elements#latest",
+    "uvalib-elements": "uvalib-components/uvalib-elements#master",
     "byutv-jsonp": "^1.3.0"
+  },
+  "resolutions": {
+    "polymer": "^1.9.0",
+    "uvalib-elements": "master",
+    "uvalib-alerts": "master",
+    "uvalib-images": "master",
+    "uvalib-analytics": "master",
+    "uvalib-banner": "master",
+    "uvalib-button": "master",
+    "uvalib-card": "master",
+    "uvalib-events-card": "master",
+    "uvalib-footer": "master",
+    "uvalib-helper-libs": "master",
+    "uvalib-header": "master",
+    "uvalib-liame": "master",
+    "uvalib-hours-card": "master",
+    "uvalib-models": "master",
+    "uvalib-logos": "master",
+    "uvalib-news-section": "master",
+    "uvalib-nav": "master",
+    "uvalib-search-box": "master",
+    "uvalib-social-links": "master",
+    "uvalib-skip-nav": "master",
+    "uvalib-theme": "master",
+    "app-storage": "^0.10.0",
+    "iron-icons": "^1.2.1",
+    "uva-footer": "master",
+    "lodash": "^4.17.4"
   }
 }
