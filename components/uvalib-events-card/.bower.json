@@ -1,0 +1,41 @@
+{
+  "name": "uvalib-events-card",
+  "description": "This card component uses the libCal API to retrieve events and then displays them in a card layout.",
+  "main": "uvalib-events-card.html",
+  "dependencies": {
+    "uvalib-elements": "uvalib-components/uvalib-elements#master",
+    "byutv-jsonp": "^1.3.1"
+  },
+  "resolutions": {
+    "lodash": "^4.17.4",
+    "app-storage": "1 - 2",
+    "iron-component-page": "^1.0.0",
+    "iron-demo-helpers": "^1.0.0",
+    "webcomponentsjs": "^1.1.0",
+    "polymer": "^2.3.1",
+    "web-component-tester": "^5.0.1",
+    "promise-polyfill": "^1.0.0",
+    "iron-ajax": "1 - 2",
+    "iron-doc-viewer": "^1.0.1",
+    "iron-icons": "1 - 2",
+    "iron-flex-layout": "1 - 2",
+    "app-layout": "1 - 2",
+    "marked-element": "1 - 2",
+    "iron-location": "1 - 2",
+    "iron-icon": "1 - 2",
+    "iron-iconset-svg": "1 - 2",
+    "iron-list": "^1.0.0",
+    "test-fixture": "^1.0.0"
+  },
+  "homepage": "https://github.com/uvalib-components/uvalib-events-card",
+  "_release": "87db03d64d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "87db03d64d926e61af4387f18c67fe5b0dfd313b"
+  },
+  "_source": "https://github.com/uvalib-components/uvalib-events-card.git",
+  "_target": "master",
+  "_originalSource": "uvalib-components/uvalib-events-card",
+  "_direct": true
+}

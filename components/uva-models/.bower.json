@@ -1,0 +1,22 @@
+{
+  "name": "uva-models",
+  "description": "Helper component to list buildings on grounds",
+  "main": "uva-buildings.html",
+  "dependencies": {
+    "uva-elements": "uva-components/uva-elements#master",
+    "lodash": "^4.17.5"
+  },
+  "resolutions": {
+    "lodash": "^4.17.5"
+  },
+  "homepage": "https://github.com/uva-components/uva-models",
+  "_release": "836b63f93b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "836b63f93bda19d65a9234052c70574f40d5e56b"
+  },
+  "_source": "https://github.com/uva-components/uva-models.git",
+  "_target": "master",
+  "_originalSource": "uva-components/uva-models"
+}
