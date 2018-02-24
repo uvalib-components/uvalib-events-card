@@ -1,25 +1,12 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../paper-material/paper-material.html">
-<link rel="import" href="../uvalib-theme/uvalib-icons.html">
 <link rel="import" href="../uvalib-theme/uvalib-theme.html">
-<link rel="import" href="../uvalib-helper-libs/moment-timezone.html">
+<link rel="import" href="../uvalib-elements/uvalib-elements.html">
 <link rel="import" href="../byutv-jsonp/byutv-jsonp.html">
 
 <!--
 `uvalib-events-card`
 This card component generates the LibCal mini calendar widget which allows for selecting a single calendar and filtering on library as well as category.
-
-### Styling
-
-The following custom properties are available for styling:
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--uvalib-events-card-bkgrd-color` | Background color of card | `Based on uvalib-theme --color-text-gray`
-`--uvalib-events-card-header-color` | Color of card header text | `Based on uvalib-theme --color-white`
-
-Note: Consult the styling used in the actual Springshare Events Calendar for widget output for a single color for the component and iframe content.
 
 @demo demo/index.html
 -->
@@ -27,102 +14,24 @@ Note: Consult the styling used in the actual Springshare Events Calendar for wid
 <dom-module id="uvalib-events-card">
   <template>
     <style is="custom-style" include="uvalib-theme">
-      :host {
-        display: block;
-        --uvalib-events-card-header-font-size: 24px;
-        --uvalib-events-card-header-font-weight: bold;
-        --iron-icon-fill-color: var(--color-text-gray,black);
-      }
-      paper-material {
-        background-color: var(--uvalib-events-card-bkgrd-color,--color-light-gray);
-/*        height: 100%;*/
-      }
-      iron-icon {
-        padding-right: 10px;
-      }
-      .card {
-/*        height: 100%;
-        @apply(--layout-vertical);*/
-      }
-      .card-header {
-        /*
-        font-size: var(--uvalib-events-card-header-font-size,--header-font-size);
-        font-weight: var(--uvalib-events-card-header-font-weight,--font-weight-demi);
-        */
-        padding: var(--uvalib-evens-card-padding,15px);
-
-        font-family: var(--font-primary);
-        font-size: 24px;
-        font-weight: 500;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.33;
-        letter-spacing: normal;
-        color: rgba(0, 0, 0, 0.54);
-      }
-      .card-content {
-        @apply(--layout-flex);
-        padding: var(--uvalib-evens-card-padding,15px);
-        padding-top: 0;
-      }
-      .card-actions {
-        border-top: 1px solid LightGray;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: var(--uvalib-event-card-padding,15px);
-        padding-right: var(--uvalib-events-card-padding,15px);
-      }
-      div a {
-        text-decoration: none;
-        color: black;
-        padding-bottom: 10px;
-      }
-      .event {
-        padding: 5px 0px 5px 0px;
-      }
-      .category {
-        color: var(--color-primary-orange);
-        font-weight: var(--font-body1);
-        font-size: 14px;
-        color: var(--color-primary-orange);
-      }
-      .title {
-        @apply(--font-title);
-      }
-      .date-time {
-        @apply(--font-subheading);
-      }
-      .location {
-        font-size: 14px;
-      }
     </style>
 
     <byutv-jsonp id="evtData" auto url="{{_springshareLibcalApiUrl}}" params="{{_eventListParams}}" last-response="{{_springshareData}}"
       debounce-duration="300"></byutv-jsonp>
 
-    <paper-material elevation$={{elevation}}>
-      <div class="card">
-        <div class="card-header">
-          <iron-icon icon$="{{headingIcon}}"></iron-icon> {{heading}}
+    <div class="events">
+      <template is="dom-repeat" items="{{_events}}">
+        <div class="event">
+          <div class="category">{{item.category}}</div>
+          <div class="title"><a href="{{item.url}}">{{item.title}}</a></div>
+          <div class="date-time">{{item.date}}, {{item.starttime}} - {{item.endtime}}</div>
+          <div class="location">{{item.location}}</div>
         </div>
-        <div class="card-content">
-          <template is="dom-repeat" items="{{_events}}">
-            <div class="event">
-              <div class="category">{{item.category}}</div>
-              <div class="title"><a href="{{item.url}}">{{item.title}}</a></div>
-              <div class="date-time">{{item.date}}, {{item.starttime}} - {{item.endtime}}</div>
-              <div class="location">{{item.location}}</div>
-            </div>
-          </template>
-          <template is="dom-if" if="{{!_events.length}}">
-            <div class="title">No events at this time. Please check back again soon.</div>
-          </template>
-        </div>
-        <div class="card-actions">
-          <content></content>
-        </div>
-      </div>
-    </paper-material>
+      </template>
+      <template is="dom-if" if="{{!_events.length}}">
+        <div class="title">No events at this time. Please check back again soon.</div>
+      </template>
+    </div>
   </template>
 
   <script>

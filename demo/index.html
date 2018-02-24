@@ -9,8 +9,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-    <link rel="import" href="../../uvalib-button/uvalib-button.html">
-    <link rel="import" href="../../uvalib-theme/uvalib-icons.html">
     <link rel="import" href="../uvalib-events-card.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -32,14 +30,10 @@
             }
           </style>
 
-          <uvalib-events-card class="long" heading="Upcoming Events" elevation="3" max-num-events-shown="6">
-              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View calendar</uvalib-button>
+          <uvalib-events-card class="long" max-num-events-shown="6">
           </uvalib-events-card>
 
-          <uvalib-events-card class="long" heading="Upcoming Events"
-              elevation="3" max-num-events-shown="0"
-              cat-ids-filter="27116,26930">
-              <uvalib-button href="http://cal.lib.virginia.edu/calendar/events">View calendar</uvalib-button>
+          <uvalib-events-card class="long" max-num-events-shown="0" cat-ids-filter="27116,26930">
           </uvalib-events-card>
         </template>
       </demo-snippet>
